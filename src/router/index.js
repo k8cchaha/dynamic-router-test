@@ -17,6 +17,11 @@ const routes = [
     name: "Course",
     component: () => import("../views/Courses/index.vue"),
   },
+  {
+    path: "/course/:id",
+    name: "Course_id",
+    component: () => import("../views/Courses/_id.vue"),
+  },
 ];
 
 const router = createRouter({

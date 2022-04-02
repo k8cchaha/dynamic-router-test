@@ -2,26 +2,36 @@
 import axios from "axios";
 import { reactive } from "@vue/reactivity";
 import { onMounted } from "@vue/runtime-core";
+import { useRouter } from "vue-router";
 export default {
   setup() {
     const courseList = reactive({ data: [] });
+    const router = useRouter();
+
+    const gotoNewRouter = (id) => {
+      router.push({ path: `/course/${id}` });
+    };
 
     onMounted(() => {
       axios
         .get("https://vue-lessons-api.herokuapp.com/courses/list")
         .then((res) => {
-          // console.log(res);
           courseList.data = res.data;
-          console.log(courseList.data);
         });
     });
-    return { courseList };
+    return { courseList, gotoNewRouter };
   },
 };
 </script>
 <template>
   <div id="courses">
-    <a class="card" v-for="item in courseList.data" :key="item.id">
+    <a
+      @click="gotoNewRouter(item.id)"
+      class="card"
+      v-for="item in courseList.data"
+      :key="item.id"
+      :to="`/course/${item.id}`"
+    >
       <img :src="item.photo" alt="" />
       <div class="content">
         <h1>{{ item.name }}</h1>
